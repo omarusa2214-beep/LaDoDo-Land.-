@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LaDoDo Land 🌐 | Go Bus & Dahab Adventure League</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- مكتبة سيرفر Supabase الرسمية -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --fb-bg: #f0f2f5;
+      --fb-card: #ffffff;
+      --fb-text: #050505;
+      --fb-subtext: #65676b;
+      --fb-border: #dddfe2;
+      --fb-blue: #1877f2;
+      --fb-blue-hover: #166fe5;
+      --ladodo-pink: #ff5ca8;
+      --ladodo-pink-soft: #ffe3f1;
+      --form-dark-bg: #1f2430;
+      --form-dark-card: #282e3d;
+      --form-input-bg: #32394a;
+      --form-border: #434c61;
+      --gold-btn-start: #fff6db;
+      --gold-btn-end: #fce192;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    body.dark-mode {
+      --fb-bg: #18191a;
+      --fb-card: #242526;
+      --fb-text: #e4e6eb;
+      --fb-subtext: #b0b3b8;
+      --fb-border: #3e4042;
+      --shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cairo', 'Inter', sans-serif;
+      background-color: var(--fb-bg);
+      color: var(--fb-text);
+      line-height: 1.5;
+      overflow-x: hidden;
+      transition: background-color 0.25s, color 0.25s;
+    }
+
+    /* ================= FACEBOOK TOP NAVBAR ================= */
+    .fb-navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 60px;
+      background: var(--fb-card);
+      border-bottom: 1px solid var(--fb-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--fb-blue), var(--ladodo-pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(255, 92, 168, 0.35);
+    }
+
+    .brand-name {
+      font-family: 'Inter', 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      background: linear-gradient(90deg, var(--fb-blue), var(--ladodo-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .fb-search {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .fb-search input {
+      background: var(--fb-bg);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 8px 36px 8px 14px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--fb-text);
+      width: 210px;
+      transition: all 0.2s;
+    }
+
+    .fb-search input:focus {
+      outline: none;
+      border-color: var(--fb-blue);
+      width: 250px;
+    }
+
+    .fb-search .search-ico {
+      position: absolute;
+      right: 12px;
+      color: var(--fb-subtext);
+      font-size: 0.95rem;
+      pointer-events: none;
+    }
+
+    .nav-center {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 100%;
+    }
+
+    .nav-tab {
+      height: 100%;
+      padding: 0 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--fb-subtext);
+      font-size: 1.25rem;
+      position: relative;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+      border: none;
+      background: transparent;
+      gap: 6px;
+    }
+
+    .nav-tab span.tab-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .nav-tab:hover {
+      background: var(--fb-bg);
+    }
+
+    .nav-tab.active {
+      color: var(--fb-blue);
+    }
+
+    .nav-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      height: 3px;
+      background: var(--fb-blue);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .circle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--fb-bg);
+      border: 1px solid var(--fb-border);
+      color: var(--fb-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.15s, background 0.15s;
+    }
+
+    .circle-btn:hover {
+      background: var(--ladodo-pink-soft);
+      transform: translateY(-1px);
+    }
+
+    .circle-btn.admin-trigger {
+      background: linear-gradient(135deg, #1877f2, #ff5ca8);
+      color: #fff;
+      border: none;
+      width: auto;
+      padding: 0 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      gap: 6px;
+      font-family: 'Cairo', sans-serif;
+      box-shadow: 0 3px 10px rgba(24, 119, 242, 0.3);
+    }
+
+    .badge-count {
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      background: var(--danger);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      min-width: 19px;
+      height: 19px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+    }
+
+    /* ================= MAIN LAYOUT (3 COLUMNS) ================= */
+    .fb-container {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 16px 12px 60px;
+      display: grid;
+      grid-template-columns: 280px 1fr 310px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    /* SIDEBARS */
+    .fb-sidebar {
+      position: sticky;
+      top: 76px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sidebar-card {
+      background: var(--fb-card);
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--fb-border);
+    }
+
+    .sidebar-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s;
+      font-weight: 700;
+      font-size: 0.93rem;
+      color: var(--fb-text);
+      text-decoration: none;
+    }
+
+    .sidebar-menu-item:hover {
+      background: var(--fb-bg);
+    }
+
+    .sidebar-menu-item .ico {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      background: var(--fb-bg);
+    }
+
+    /* CENTER FEED */
+    .fb-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    /* COVER PROFILE CARD */
+    .profile-header-card {
+      background: var(--fb-card);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--fb-border);
+    }
+
+    .cover-photo {
+      height: 210px;
+      background: linear-gradient(125deg, #0f172a 0%, #1e3a8a 45%, #be185d 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 32px;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .cover-photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(255, 92, 168, 0.35), transparent 60%);
+    }
+
+    .cover-text {
+      position: relative;
+      z-index: 2;
+      max-width: 65%;
+    }
+
+    .cover-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(6px);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+
+    .cover-text h1 {
+      font-size: 1.9rem;
+      font-weight: 900;
+      margin-bottom: 4px;
+      font-family: 'Inter', 'Cairo', sans-serif;
+    }
+
+    .cover-text p {
+      font-size: 0.95rem;
+      opacity: 0.92;
+    }
+
+    .profile-bar {
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .profile-Identity {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .profile-avatar {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      margin-top: -46px;
+      background: linear-gradient(135deg, #ff85c0, #ff3d9a);
+      border: 4px solid var(--fb-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 3;
+    }
+
+    .verified-tick {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--fb-blue);
+      color: #fff;
+      font-size: 0.7rem;
+      margin-right: 4px;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .fb-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+
+    .fb-btn-primary {
+      background: var(--fb-blue);
+      color: #fff;
+    }
+
+    .fb-btn-primary:hover {
+      background: var(--fb-blue-hover);
+    }
+
+    .fb-btn-pink {
+      background: var(--ladodo-pink);
+      color: #fff;
+    }
+
+    .fb-btn-pink:hover {
+      filter: brightness(1.06);
+    }
+
+    .fb-btn-secondary {
+      background: var(--fb-bg);
+      color: var(--fb-text);
+      border: 1px solid var(--fb-border);
+    }
+
+    .fb-btn-secondary:hover {
+      filter: brightness(0.95);
+    }
+
+    /* ================= THE EXACT SCREENSHOT FORM SECTION ================= */
+    .league-showcase-wrapper {
+      background: var(--form-dark-bg);
+      border-radius: 16px;
+      padding: 32px 24px 36px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+      border: 1px solid #343b4f;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Inter', 'Cairo', sans-serif;
+    }
+
+    .league-header-banner {
+      max-width: 680px;
+      margin: 0 auto 18px;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .league-header-banner .sub-note {
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    .gobus-pill {
+      background: linear-gradient(90deg, #e11d48, #fb7185);
+      color: #fff;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 10px rgba(225, 29, 72, 0.4);
+    }
+
+    .form-stage {
+      position: relative;
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+    }
+
+    /* CUTE PINK BUNNY MASCOT (LaDoDo) PEEKING FROM THE LEFT LIKE THE PHOTO */
+    .ladodo-mascot-peeking {
+      position: absolute;
+      left: -82px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 110px;
+      z-index: 1;
+      pointer-events: none;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.45));
+      transition: transform 0.3s ease;
+    }
+
+    .form-stage:hover .ladodo-mascot-peeking {
+      transform: translateY(-52%) rotate(-3deg) scale(1.03);
+    }
+
+    /* DARK FORM CARD MATCHING SCREENSHOT */
+    .dahab-form-card {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      background: rgba(40, 46, 61, 0.95);
+      border: 1px solid var(--form-border);
+      border-radius: 10px;
+      padding: 28px 26px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .dahab-form-card label {
+      display: block;
+      color: #f1f5f9;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: 0.2px;
+    }
+
+    .dahab-form-card input[type="text"],
+    .dahab-form-card input[type="number"],
+    .dahab-form-card input[type="email"],
+    .dahab-form-card input[type="tel"],
+    .dahab-form-card select,
+    .dahab-form-card textarea {
+      width: 100%;
+      background: var(--form-input-bg);
+      border: 1px solid var(--form-border);
+      border-radius: 6px;
+      padding: 12px 14px;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-family: 'Inter', 'Cairo', sans-serif;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .dahab-form-card input::placeholder,
+    .dahab-form-card textarea::placeholder {
+      color: #94a3b8;
+    }
+
+    .dahab-form-card input:focus,
+    .dahab-form-card select:focus,
+    .dahab-form-card textarea:focus {
+      outline: none;
+      border-color: #fde68a;
+      box-shadow: 0 0 0 3px rgba(253, 230, 138, 0.15);
+    }
+
+    .dahab-form-card textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .gobus-extra-box {
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px dashed #475569;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 18px;
+    }
+
+    .gobus-extra-title {
+      color: #fda4af;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .confirm-checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0 20px;
+      cursor: pointer;
+    }
+
+    .confirm-checkbox-row input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: #fce192;
+      cursor: pointer;
+    }
+
+    .confirm-checkbox-row span {
+      color: #e2e8f0;
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    .join-league-btn {
+      width: 100%;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(180deg, var(--gold-btn-start) 0%, var(--gold-btn-end) 100%);
+      color: #475569;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(252, 225, 146, 0.25);
+      transition: transform 0.15s, filter 0.15s, box-shadow 0.15s;
+    }
+
+    .join-league-btn:hover {
+      filter: brightness(1.03);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(252, 225, 146, 0.4);
+      color: #1e293b;
+    }
+
+    .join-league-btn:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
+
+    /* ================= FACEBOOK POSTS ================= */
+    .fb-post-card {
+      background: var(--fb-card);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--fb-border);
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .post-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .author-thumb {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff5ca8, #1877f2);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .author-meta h4 {
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    .author-meta span {
+      font-size: 0.78rem;
+      color: var(--fb-subtext);
+    }
+
+    .post-content {
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+      white-space: pre-line;
+    }
+
+    .post-stats {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-top: 1px solid var(--fb-border);
+      border-bottom: 1px solid var(--fb-border);
+      font-size: 0.82rem;
+      color: var(--fb-subtext);
+      margin-bottom: 8px;
+    }
+
+    .post-actions-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .post-action-btn {
+      background: transparent;
+      border: none;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--fb-subtext);
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .post-action-btn:hover {
+      background: var(--fb-bg);
+    }
+
+    .post-action-btn.liked {
+      color: var(--ladodo-pink);
+    }
+
+    .comments-section {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--fb-border);
+    }
+
+    .comment-item {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .comment-bubble {
+      background: var(--fb-bg);
+      padding: 8px 12px;
+      border-radius: 14px;
+      font-size: 0.85rem;
+      flex: 1;
+    }
+
+    .comment-bubble strong {
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 2px;
+    }
+
+    .comment-input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .comment-input-row input {
+      flex: 1;
+      background: var(--fb-bg);
+      border: 1px solid var(--fb-border);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      color: var(--fb-text);
+    }
+
+    /* ================= MODALS ================= */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--fb-card);
+      color: var(--fb-text);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 500px;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      border: 1px solid var(--fb-border);
+      animation: popIn 0.22s ease;
+    }
+
+    .modal-card.dashboard-wide {
+      max-width: 1280px;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.94); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .dashboard-header {
+      padding: 18px 24px;
+      background: linear-gradient(90deg, #0f172a, #1e3a8a, #be185d);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .dashboard-body {
+      padding: 20px 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .stat-box {
+      background: var(--fb-bg);
+      border: 1px solid var(--fb-border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    .stat-box .num {
+      font-size: 1.7rem;
+      font-weight: 900;
+      color: var(--fb-blue);
+    }
+
+    .stat-box .lbl {
+      font-size: 0.82rem;
+      color: var(--fb-subtext);
+      font-weight: 700;
+    }
+
+    .admin-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      background: var(--fb-bg);
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    .admin-toolbar input,
+    .admin-toolbar select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--fb-border);
+      background: var(--fb-card);
+      color: var(--fb-text);
+      font-family: inherit;
+    }
+
+    .data-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--fb-border);
+      border-radius: 12px;
+    }
+
+    table.admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      min-width: 1040px;
+    }
+
+    table.admin-table th,
+    table.admin-table td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--fb-border);
+      text-align: right;
+    }
+
+    table.admin-table th {
+      background: var(--fb-bg);
+      font-weight: 800;
+      color: var(--fb-subtext);
+      white-space: nowrap;
+    }
+
+    table.admin-table tr:hover {
+      background: rgba(24, 119, 242, 0.04);
+    }
+
+    .status-pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .status-confirmed { background: #dcfce7; color: #15803d; }
+
+    /* FLOATING ADMIN BUTTON */
+    .floating-admin-fab {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 999;
+      background: linear-gradient(135deg, #0f172a, #be185d);
+      color: #fff;
+      border: 2px solid #fff;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 3000;
+      background: #0f172a;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+      border-right: 4px solid var(--ladodo-pink);
+      display: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .edit-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .edit-form-grid label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .edit-form-grid input,
+    .edit-form-grid select,
+    .edit-form-grid textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--fb-border);
+      background: var(--fb-bg);
+      color: var(--fb-text);
+      font-family: inherit;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1100px) {
+      .fb-container {
+        grid-template-columns: 1fr;
+      }
+      .fb-sidebar {
+        display: none;
+      }
+      .ladodo-mascot-peeking {
+        position: static;
+        transform: none;
+        margin: 0 auto -18px;
+        display: block;
+        width: 90px;
+      }
+      .form-stage {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .form-row-2, .edit-form-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-center {
+        display: none;
+      }
+      .fb-search input {
+        width: 130px;
+      }
+      .cover-text {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= TOP FACEBOOK NAVBAR ================= -->
+  <header class="fb-navbar">
+    <div class="nav-right">
+      <div class="brand-logo" onclick="scrollToSection('top')">
+        <div class="brand-icon">🐰</div>
+        <span class="brand-name">LaDoDo Land</span>
+      </div>
+      <div class="fb-search">
+        <span class="search-ico">🔍</span>
+        <input type="text" id="globalSearchInput" placeholder="ابحث في LaDoDo Land..." oninput="filterFeedPosts(this.value)" />
+      </div>
+    </div>
+
+    <nav class="nav-center">
+      <button class="nav-tab active" onclick="switchTab(this, 'all')" title="الرئيسية">
+        <span>🏠</span>
+        <span class="tab-label">الرئيسية</span>
+      </button>
+      <button class="nav-tab" onclick="scrollToSection('bookingFormSection')" title="حجز جو باص">
+        <span>🚌</span>
+        <span class="tab-label">حجز Go Bus</span>
+      </button>
+      <button class="nav-tab" onclick="scrollToSection('communityPostsSection')" title="مجتمع المسافرين">
+        <span>🌴</span>
+        <span class="tab-label">دهب 2026</span>
+      </button>
+    </nav>
+
+    <div class="nav-left">
+      <button class="circle-btn admin-trigger" onclick="openAdminModal()" title="لوحة التحكم المحمية">
+        <span>🔐</span>
+        <span>لوحة التحكم</span>
+        <span class="badge-count" id="navBookingCount">0</span>
+      </button>
+      <button class="circle-btn" onclick="toggleDarkMode()" title="الوضع الليلي / النهاري" id="themeBtn">🌙</button>
+      <button class="circle-btn" onclick="showRandomNotification()" title="الإشعارات">
+        🔔
+        <span class="badge-count" id="notifBadge">1</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= 3-COLUMN FACEBOOK BODY ================= -->
+  <main class="fb-container" id="top">
+
+    <!-- RIGHT SIDEBAR (NAVIGATION) -->
+    <aside class="fb-sidebar">
+      <div class="sidebar-card">
+        <a class="sidebar-menu-item" href="#bookingFormSection">
+          <div class="ico" style="background:#ffe3f1;color:#d61f69;">🐰</div>
+          <span>LaDoDo Land Official</span>
+        </a>
+        <a class="sidebar-menu-item" href="#bookingFormSection">
+          <div class="ico" style="background:#dbeafe;color:#1d4ed8;">🚌</div>
+          <span>حجز باصات Go Bus دهب</span>
+        </a>
+        <a class="sidebar-menu-item" href="#communityPostsSection">
+          <div class="ico" style="background:#dcfce7;color:#15803d;">🏕️</div>
+          <span>Dahab Adventure League</span>
+        </a>
+        <div class="sidebar-menu-item" onclick="openAdminModal()">
+          <div class="ico" style="background:#fef3c7;color:#b45309;">🔐</div>
+          <span>إدارة الحجوزات (Admin)</span>
+        </div>
+        <div class="sidebar-menu-item" onclick="exportBookingsCSVPublicNotice()">
+          <div class="ico" style="background:#f3e8ff;color:#7e22ce;">🎫</div>
+          <span>الاستعلام عن تذكرتي</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h4 style="margin-bottom:10px;font-size:0.92rem;color:var(--fb-subtext);">📌 تفاصيل رحلة دهب القادمة</h4>
+        <div style="font-size:0.86rem;display:flex;flex-direction:column;gap:8px;">
+          <div>📅 <strong>الموعد:</strong> 18 أكتوبر 2026</div>
+          <div>🚌 <strong>الناقل الرسمي:</strong> Go Bus (VIP & Deluxe)</div>
+          <div>📍 <strong>الوجهة:</strong> دهب - جنوب سيناء</div>
+          <div>👥 <strong>المسجلون حالياً:</strong> <span id="sidebarCounter" style="color:var(--ladodo-pink);font-weight:800;">0</span> مسافر</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER FEED -->
+    <section class="fb-feed">
+
+      <!-- FACEBOOK PAGE COVER & HEADER -->
+      <div class="profile-header-card">
+        <div class="cover-photo">
+          <div class="cover-text">
+            <div class="cover-badge">🌐 LaDoDo Land × Go Bus Egypt</div>
+            <h1>LaDoDo Land - Dahab League</h1>
+            <p>البوابة الرسمية لحجز رحلات جو باص ومغامرات دهب 2026 مع لادودو 🐰🚌</p>
+          </div>
+          <!-- Cute SVG Mascot in Cover -->
+          <svg width="110" height="110" viewBox="0 0 120 120" style="position:relative;z-index:2;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.3));">
+            <ellipse cx="42" cy="26" rx="12" ry="24" fill="#ff85c0" stroke="#fff" stroke-width="3"/>
+            <ellipse cx="42" cy="26" rx="6" ry="15" fill="#ffc2df"/>
+            <ellipse cx="78" cy="26" rx="12" ry="24" fill="#ff85c0" stroke="#fff" stroke-width="3"/>
+            <ellipse cx="78" cy="26" rx="6" ry="15" fill="#ffc2df"/>
+            <circle cx="60" cy="68" r="36" fill="#ff85c0" stroke="#fff" stroke-width="3"/>
+            <circle cx="60" cy="70" r="26" fill="#ffe4dc"/>
+            <circle cx="50" cy="65" r="4" fill="#1e293b"/>
+            <circle cx="70" cy="65" r="4" fill="#1e293b"/>
+            <ellipse cx="44" cy="73" rx="5" ry="3" fill="#ff5ca8" opacity="0.6"/>
+            <ellipse cx="76" cy="73" rx="5" ry="3" fill="#ff5ca8" opacity="0.6"/>
+            <path d="M 50 76 Q 60 86 70 76" fill="#be185d" stroke="#1e293b" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <div class="profile-bar">
+          <div class="profile-Identity">
+            <div class="profile-avatar" title="LaDoDo Character">
+              <span style="font-size:2.3rem;">🐰</span>
+            </div>
+            <div>
+              <h2 style="font-size:1.3rem;font-weight:900;display:flex;align-items:center;gap:6px;">
+                LaDoDo Land
+                <span class="verified-tick" title="موثق">✓</span>
+              </h2>
+              <p style="font-size:0.83rem;color:var(--fb-subtext);">@LaDoDoLand.GoBus • وكالة سفر ومغامرات ترفيهية</p>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button class="fb-btn fb-btn-pink" onclick="scrollToSection('bookingFormSection')">
+              🚌 احجز مقعدك الآن
+            </button>
+            <button class="fb-btn fb-btn-primary" onclick="openAdminModal()">
+              🔐 لوحة التحكم
+            </button>
+            <button class="fb-btn fb-btn-secondary" onclick="shareWebsite()">
+              ↗️ مشاركة
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= THE EXACT DARK BOOKING FORM FROM SCREENSHOT ================= -->
+      <div class="league-showcase-wrapper" id="bookingFormSection">
+        <div class="league-header-banner">
+          <div>
+            <div style="font-weight:800;font-size:1.15rem;color:#fff;">Dahab Adventure League & Go Bus Portal</div>
+            <div class="sub-note">Sign up before October 18 when registration closes.</div>
+          </div>
+          <span class="gobus-pill">🚌 Go Bus Official Booking</span>
+        </div>
+
+        <div class="form-stage">
+          <!-- Cute Pink LaDoDo Bunny Doll Peeking from Left exactly like the screenshot -->
+          <svg class="ladodo-mascot-peeking" viewBox="0 0 140 240" xmlns="http://www.w3.org/2000/svg">
+            <!-- Bunny Ears -->
+            <ellipse cx="48" cy="38" rx="15" ry="34" fill="#f472b6" stroke="#db2777" stroke-width="3"/>
+            <ellipse cx="48" cy="40" rx="8" ry="22" fill="#fbcfe8"/>
+            <ellipse cx="88" cy="38" rx="15" ry="34" fill="#f472b6" stroke="#db2777" stroke-width="3"/>
+            <ellipse cx="88" cy="40" rx="8" ry="22" fill="#fbcfe8"/>
+            <!-- Fluffy Hood -->
+            <circle cx="68" cy="96" r="44" fill="#f472b6" stroke="#db2777" stroke-width="3"/>
+            <!-- Cute Doll Face -->
+            <ellipse cx="68" cy="98" rx="31" ry="27" fill="#fed7aa"/>
+            <!-- Happy Arched Eyes -->
+            <path d="M 50 92 Q 56 84 62 92" fill="none" stroke="#334155" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M 74 92 Q 80 84 86 92" fill="none" stroke="#334155" stroke-width="3.5" stroke-linecap="round"/>
+            <!-- Rosy Cheeks -->
+            <ellipse cx="48" cy="101" rx="6" ry="3.5" fill="#fb7185" opacity="0.65"/>
+            <ellipse cx="88" cy="101" rx="6" ry="3.5" fill="#fb7185" opacity="0.65"/>
+            <!-- Big Cute Smile -->
+            <path d="M 55 104 Q 68 119 81 104 Z" fill="#9f1239"/>
+            <path d="M 60 105 L 76 105 L 75 109 L 61 109 Z" fill="#ffffff"/>
+            <!-- Pink Plush Body & Paws -->
+            <rect x="34" y="135" width="68" height="72" rx="28" fill="#f472b6" stroke="#db2777" stroke-width="3"/>
+            <ellipse cx="68" cy="168" rx="20" ry="22" fill="#fbcfe8" opacity="0.6"/>
+            <circle cx="38" cy="160" r="11" fill="#f472b6" stroke="#db2777" stroke-width="2.5"/>
+            <circle cx="98" cy="160" r="11" fill="#f472b6" stroke="#db2777" stroke-width="2.5"/>
+            <!-- Plush Feet -->
+            <ellipse cx="52" cy="210" rx="14" ry="10" fill="#ec4899" stroke="#db2777" stroke-width="2.5"/>
+            <ellipse cx="84" cy="210" rx="14" ry="10" fill="#ec4899" stroke="#db2777" stroke-width="2.5"/>
+          </svg>
+
+          <!-- Form Card Matching Screenshot -->
+          <form class="dahab-form-card" id="dahabBookingForm" onsubmit="handleBookingSubmit(event)">
+            <!-- Row 1: Full name -->
+            <div class="form-group">
+              <label for="fullName">Full name</label>
+              <input type="text" id="fullName" placeholder="Your full name" required />
+            </div>
+
+            <!-- Row 2: Age & Gender -->
+            <div class="form-row-2">
+              <div>
+                <label for="age">Age</label>
+                <input type="number" id="age" min="5" max="99" placeholder="e.g. 24" required />
+              </div>
+              <div>
+                <label for="gender">Gender</label>
+                <select id="gender" required>
+                  <option value="" disabled selected>Select...</option>
+                  <option value="Male">Male (ذكر)</option>
+                  <option value="Female">Female (أنثى)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 3: WhatsApp number & Email -->
+            <div class="form-row-2">
+              <div>
+                <label for="whatsapp">WhatsApp number</label>
+                <input type="tel" id="whatsapp" placeholder="+20 1XX XXX XXXX" required />
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="you@example.com" required />
+              </div>
+            </div>
+
+            <!-- Row 4: Emergency contact name & Emergency contact phone -->
+            <div class="form-row-2">
+              <div>
+                <label for="emergencyName">Emergency contact name</label>
+                <input type="text" id="emergencyName" placeholder="Relative or friend name" required />
+              </div>
+              <div>
+                <label for="emergencyPhone">Emergency contact phone</label>
+                <input type="tel" id="emergencyPhone" placeholder="+20 1XX XXX XXXX" required />
+              </div>
+            </div>
+
+            <!-- Go Bus Booking Specific Options -->
+            <div class="gobus-extra-box">
+              <div class="gobus-extra-title">
+                <span>🚌 Go Bus Trip Preferences (تفاصيل حجز جو باص)</span>
+                <span>Oct 18, 2026</span>
+              </div>
+              <div class="form-row-2" style="margin-bottom:0;">
+                <div>
+                  <label for="gobusStation">Boarding Station (محطة الركوب)</label>
+                  <select id="gobusStation" required>
+                    <option value="Tahrir - Abdel Moneim Riad">التحرير (عبد المنعم رياض)</option>
+                    <option value="Nasr City - Almaza">مدينة نصر (ألماظة)</option>
+                    <option value="6th of October">6 أكتوبر (الحصري)</option>
+                    <option value="Alexandria - Moharam Bek">الإسكندرية (محرم بك)</option>
+                    <option value="Mansoura">المنصورة</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="gobusClass">Bus Class & Seat (فئة الباص والمقعد)</label>
+                  <select id="gobusClass" required>
+                    <option value="Go Bus Elite Plus - Window">Elite Plus VIP (بجانب الشباك)</option>
+                    <option value="Go Bus Elite Plus - Aisle">Elite Plus VIP (بجانب الممر)</option>
+                    <option value="Go Bus Deluxe Plus">Deluxe Plus (ديلوكس بلس)</option>
+                    <option value="Go Bus Aero First Class">Aero First Class</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 5: Allergies or medical notes (optional) -->
+            <div class="form-group">
+              <label for="medicalNotes">Allergies or medical notes (optional)</label>
+              <textarea id="medicalNotes" placeholder="Allergies, medications, anything we should know"></textarea>
+            </div>
+
+            <!-- Row 6: Confirmation Checkbox -->
+            <label class="confirm-checkbox-row">
+              <input type="checkbox" id="confirmAgreement" required />
+              <span>I confirm the details above are correct and I agree to take part in the Dahab Adventure League.</span>
+            </label>
+
+            <!-- Row 7: Submit Button -->
+            <button type="submit" class="join-league-btn" id="submitBookingBtn">JOIN THE LEAGUE</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ================= FACEBOOK COMMUNITY POSTS ================= -->
+      <div id="communityPostsSection" style="display:flex;flex-direction:column;gap:16px;"></div>
+
+    </section>
+
+    <!-- LEFT SIDEBAR (GO BUS SCHEDULE & RECENT TRAVELERS) -->
+    <aside class="fb-sidebar">
+      <div class="sidebar-card">
+        <h4 style="margin-bottom:10px;font-size:0.92rem;display:flex;align-items:center;justify-content:space-between;">
+          <span>🚌 مواعيد تحرك Go Bus</span>
+          <span style="font-size:0.75rem;color:var(--success);">● متاح الحجز</span>
+        </h4>
+        <div style="font-size:0.83rem;display:flex;flex-direction:column;gap:10px;">
+          <div style="padding:8px;background:var(--fb-bg);border-radius:8px;">
+            <strong>القاهرة (التحرير / ألماظة)</strong>
+            <div style="color:var(--fb-subtext);">التجمع 10:30 م - التحرك 11:00 م</div>
+          </div>
+          <div style="padding:8px;background:var(--fb-bg);border-radius:8px;">
+            <strong>المنصورة / الإسكندرية</strong>
+            <div style="color:var(--fb-subtext);">التجمع 08:30 م - التحرك 09:00 م</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h4 style="margin-bottom:10px;font-size:0.92rem;">🌟 أحدث المنضمين للرحلة</h4>
+        <div id="recentTravelersWidget" style="display:flex;flex-direction:column;gap:8px;font-size:0.85rem;"></div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ================= FLOATING ADMIN BUTTON ================= -->
+  <button class="floating-admin-fab" onclick="openAdminModal()">
+    <span>🔐</span>
+    <span>لوحة التحكم (<span id="fabBookingCount">0</span>)</span>
+  </button>
+
+  <!-- ================= MODAL 1: ADMIN PASSWORD LOGIN ================= -->
+  <div class="modal-overlay" id="adminLoginModal">
+    <div class="modal-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 style="font-size:1.15rem;display:flex;align-items:center;gap:8px;">🔐 دخول لوحة تحكم LaDoDo Land</h3>
+        <button class="circle-btn" style="width:32px;height:32px;" onclick="closeModal('adminLoginModal')">✕</button>
+      </div>
+      <p style="font-size:0.86rem;color:var(--fb-subtext);margin-bottom:14px;">
+        هذه اللوحة محمية بتشفير ذكي لعرض وإدارة كافة بيانات المسافرين وحجوزات جو باص.
+      </p>
+      <form onsubmit="verifyEncryptedAdminPassword(event)">
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:6px;">كلمة المرور المشفرة (Password):</label>
+          <div style="display:flex;gap:8px;">
+            <input type="password" id="adminPassInput" placeholder="أدخل كلمة المرور..." required
+              style="flex:1;padding:10px 14px;border-radius:8px;border:1px solid var(--fb-border);background:var(--fb-bg);color:var(--fb-text);font-family:'Inter',sans-serif;" />
+            <button type="button" class="fb-btn fb-btn-secondary" onclick="togglePassVisibility()">👁️</button>
+          </div>
+          <label style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:0.82rem;cursor:pointer;">
+            <input type="checkbox" id="rememberAdminCheck" checked />
+            <span>تذكر دخولي على هذا الجهاز</span>
+          </label>
+          <div id="loginErrorMsg" style="color:var(--danger);font-size:0.8rem;margin-top:6px;display:none;font-weight:700;">
+            ❌ كلمة المرور غير صحيحة! تأكد من كتابة الحروف الكبيرة والصغيرة بشكل صحيح.
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;">
+          <button type="button" class="fb-btn fb-btn-secondary" onclick="closeModal('adminLoginModal')">إلغاء</button>
+          <button type="submit" class="fb-btn fb-btn-primary">فتح لوحة البيانات 🔓</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 2: FULL ADMIN DASHBOARD ================= -->
+  <div class="modal-overlay" id="adminDashboardModal">
+    <div class="modal-card dashboard-wide">
+      <div class="dashboard-header">
+        <div>
+          <h2 style="font-size:1.25rem;font-weight:900;">🌐 لوحة تحكم LaDoDo Land - بيانات حجز Go Bus & Dahab</h2>
+          <p style="font-size:0.8rem;opacity:0.95;">
+            ☁️ متصل بالسيرفر السحابي: otudnzaslvblfwfxqdjj.supabase.co • مزامنة فورية لجميع الأجهزة
+          </p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="fb-btn" style="background:#0ea5e9;color:#fff;" onclick="syncFromSupabaseCloud(true)">🔄 تحديث البيانات</button>
+          <button class="fb-btn" style="background:#22c55e;color:#fff;" onclick="openEditBookingModal(null)">➕ إضافة حجز يدوي</button>
+          <button class="fb-btn fb-btn-pink" onclick="exportToCSV()">📥 تصدير Excel (CSV)</button>
+          <button class="fb-btn fb-btn-secondary" style="background:#fff;color:#0f172a;" onclick="exportToJSON()">📦 حفظ نسخة JSON</button>
+          <label class="fb-btn fb-btn-secondary" style="background:#fff;color:#0f172a;cursor:pointer;">
+            📂 استيراد JSON
+            <input type="file" accept=".json" style="display:none;" onchange="importFromJSON(event)" />
+          </label>
+          <button class="fb-btn" style="background:var(--danger);color:#fff;" onclick="closeModal('adminDashboardModal')">إغلاق ✕</button>
+        </div>
+      </div>
+
+      <div class="dashboard-body">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="num" id="statTotal">0</div>
+            <div class="lbl">إجمالي الحجوزات المسجلة</div>
+          </div>
+          <div class="stat-box">
+            <div class="num" id="statMale" style="color:#0284c7;">0</div>
+            <div class="lbl">عدد الذكور (Male)</div>
+          </div>
+          <div class="stat-box">
+            <div class="num" id="statFemale" style="color:var(--ladodo-pink);">0</div>
+            <div class="lbl">عدد الإناث (Female)</div>
+          </div>
+          <div class="stat-box">
+            <div class="num" id="statMedical" style="color:var(--warning);">0</div>
+            <div class="lbl">لديهم ملاحظات طبية / حساسية</div>
+          </div>
+        </div>
+
+        <!-- Search & Filter Toolbar -->
+        <div class="admin-toolbar">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;flex:1;">
+            <input type="text" id="adminSearchInput" placeholder="🔍 ابحث بالاسم أو رقم الواتساب أو الإيميل أو رقم التذكرة..." oninput="renderAdminTable()" style="min-width:250px;flex:1;" />
+            <select id="adminGenderFilter" onchange="renderAdminTable()">
+              <option value="ALL">كل الأنواع (All Genders)</option>
+              <option value="Male">Male (ذكور)</option>
+              <option value="Female">Female (إناث)</option>
+            </select>
+            <select id="adminStationFilter" onchange="renderAdminTable()">
+              <option value="ALL">كل محطات Go Bus</option>
+              <option value="Tahrir - Abdel Moneim Riad">التحرير</option>
+              <option value="Nasr City - Almaza">مدينة نصر (ألماظة)</option>
+              <option value="6th of October">6 أكتوبر</option>
+              <option value="Alexandria - Moharam Bek">الإسكندرية</option>
+              <option value="Mansoura">المنصورة</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="fb-btn fb-btn-primary" onclick="printAdminTable()">🖨️ طباعة الكشف</button>
+            <button class="fb-btn" style="background:#fee2e2;color:#b91c1c;" onclick="clearAllBookings()">🗑️ مسح الكل</button>
+          </div>
+        </div>
+
+        <!-- Complete Bookings Table -->
+        <div class="data-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>رقم التذكرة</th>
+                <th>Full Name (الاسم)</th>
+                <th>Age / Gender</th>
+                <th>WhatsApp (واتساب)</th>
+                <th>Email (الإيميل)</th>
+                <th>Emergency Contact (الطوارئ)</th>
+                <th>Go Bus (المحطة والفئة)</th>
+                <th>Medical Notes (ملاحظات طبية)</th>
+                <th>تاريخ التسجيل</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 3: EDIT / ADD BOOKING MODAL ================= -->
+  <div class="modal-overlay" id="editBookingModal">
+    <div class="modal-card" style="max-width:580px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <h3 id="editModalTitle" style="font-size:1.1rem;font-weight:900;">✏️ تعديل بيانات الحجز</h3>
+        <button class="circle-btn" style="width:32px;height:32px;" onclick="closeModal('editBookingModal')">✕</button>
+      </div>
+      <form onsubmit="saveEditedBooking(event)">
+        <input type="hidden" id="editBookingId" />
+        <div class="edit-form-grid">
+          <div style="grid-column:span 2;">
+            <label>Full Name (الاسم بالكامل)</label>
+            <input type="text" id="editFullName" required />
+          </div>
+          <div>
+            <label>Age (السن)</label>
+            <input type="number" id="editAge" min="5" max="99" required />
+          </div>
+          <div>
+            <label>Gender (النوع)</label>
+            <select id="editGender" required>
+              <option value="Male">Male (ذكر)</option>
+              <option value="Female">Female (أنثى)</option>
+            </select>
+          </div>
+          <div>
+            <label>WhatsApp Number (رقم الواتساب)</label>
+            <input type="tel" id="editWhatsapp" required />
+          </div>
+          <div>
+            <label>Email (البريد الإلكتروني)</label>
+            <input type="email" id="editEmail" required />
+          </div>
+          <div>
+            <label>Emergency Contact Name (اسم الطوارئ)</label>
+            <input type="text" id="editEmergencyName" required />
+          </div>
+          <div>
+            <label>Emergency Contact Phone (رقم الطوارئ)</label>
+            <input type="tel" id="editEmergencyPhone" required />
+          </div>
+          <div>
+            <label>Go Bus Station (محطة الركوب)</label>
+            <select id="editGobusStation" required>
+              <option value="Tahrir - Abdel Moneim Riad">التحرير (عبد المنعم رياض)</option>
+              <option value="Nasr City - Almaza">مدينة نصر (ألماظة)</option>
+              <option value="6th of October">6 أكتوبر (الحصري)</option>
+              <option value="Alexandria - Moharam Bek">الإسكندرية (محرم بك)</option>
+              <option value="Mansoura">المنصورة</option>
+            </select>
+          </div>
+          <div>
+            <label>Bus Class (فئة الباص)</label>
+            <select id="editGobusClass" required>
+              <option value="Go Bus Elite Plus - Window">Elite Plus VIP (بجانب الشباك)</option>
+              <option value="Go Bus Elite Plus - Aisle">Elite Plus VIP (بجانب الممر)</option>
+              <option value="Go Bus Deluxe Plus">Deluxe Plus (ديلوكس بلس)</option>
+              <option value="Go Bus Aero First Class">Aero First Class</option>
+            </select>
+          </div>
+          <div style="grid-column:span 2;">
+            <label>Allergies or medical notes (ملاحظات طبية)</label>
+            <textarea id="editMedicalNotes" rows="2"></textarea>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;">
+          <button type="button" class="fb-btn fb-btn-secondary" onclick="closeModal('editBookingModal')">إلغاء</button>
+          <button type="submit" class="fb-btn fb-btn-primary">حفظ البيانات 💾</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 4: BOARDING PASS TICKET ================= -->
+  <div class="modal-overlay" id="ticketModal">
+    <div class="modal-card" style="max-width:500px;text-align:center;">
+      <div style="font-size:2.6rem;margin-bottom:6px;">🎉🚌</div>
+      <h3 style="font-size:1.3rem;font-weight:900;color:var(--fb-blue);margin-bottom:4px;">تم تأكيد حجزك في LaDoDo Land!</h3>
+      <p style="font-size:0.86rem;color:var(--fb-subtext);margin-bottom:16px;">تم تسجيل بياناتك بنجاح في كشف ركاب Go Bus & Dahab Adventure League</p>
+      
+      <div id="ticketDetailsBox" style="background:var(--fb-bg);border:2px dashed var(--ladodo-pink);border-radius:12px;padding:16px;text-align:right;font-size:0.88rem;margin-bottom:18px;display:flex;flex-direction:column;gap:6px;">
+      </div>
+
+      <div style="display:flex;gap:8px;justify-content:center;">
+        <button class="fb-btn fb-btn-primary" onclick="window.print()">🖨️ طباعة التذكرة</button>
+        <button class="fb-btn fb-btn-pink" onclick="closeModal('ticketModal')">تم، شكراً 🐰</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast-box" id="toastBox"></div>
+
+  <!-- ================= SUPABASE CLOUD + 5-LAYER LOCAL ENGINE ================= -->
+  <script>
+    // 1. NEW SUPABASE CREDENTIALS PROVIDED BY USER
+    const SUPABASE_URL = 'https://otudnzaslvblfwfxqdjj.supabase.co';
+    // Normalized to standard 'sb_publishable_...' in case mobile keyboard capitalized first letter 'S'
+    const RAW_USER_KEY = 'Sb_publishable_6xOE2xaeexht73-TWosmUg_FKlSj8Q6';
+    const SUPABASE_KEY = RAW_USER_KEY.charAt(0).toLowerCase() + RAW_USER_KEY.slice(1);
+    const TABLE_NAME = 'ladodo_bookings';
+
+    let supabaseClient = null;
+    let realtimeChannel = null;
+
+    try {
+      if (window.supabase && window.supabase.createClient) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+          auth: { persistSession: false }
+        });
+      }
+    } catch (err) {
+      console.error('Supabase Init Error:', err);
+    }
+
+    // 2. LOCAL KEYS & ENCRYPTED PASSWORD ("Ladodoland2026Oct18")
+    const STORAGE_KEY = 'ladodo_land_real_bookings_v4';
+    const POSTS_KEY = 'ladodo_land_fb_posts_v4';
+    const ADMIN_AUTH_KEY = 'ladodo_land_admin_auth_v4';
+    const IDB_NAME = 'LaDoDoLandPermanentDB_v4';
+    const IDB_STORE = 'app_state_store';
+
+    const ENCRYPTED_PASS_BYTES = [102, 75, 78, 69, 78, 69, 70, 75, 68, 78, 24, 26, 24, 28, 101, 73, 94, 27, 18];
+
+    function checkEncryptedPassword(inputStr) {
+      const cleaned = (inputStr || '').trim();
+      if (cleaned.length !== ENCRYPTED_PASS_BYTES.length) return false;
+      for (let i = 0; i < ENCRYPTED_PASS_BYTES.length; i++) {
+        if ((cleaned.charCodeAt(i) ^ 42) !== ENCRYPTED_PASS_BYTES[i]) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    let bookings = [];
+    let isAdminAuthenticated = false;
+
+    const DEFAULT_POSTS = [
+      {
+        id: 'post-1',
+        author: 'LaDoDo Land Official',
+        time: 'منذ ساعتين • 🌐',
+        content: 'جاهزين لأقوى مغامرة في دهب؟ 🌴🐰\nتم فتح باب التسجيل رسمياً في Dahab Adventure League بالتعاون مع باصات Go Bus VIP!\nاملأ استمارة الحجز في الأعلى وتأكد من كتابة رقم الواتساب الصحيح لتصلك تفاصيل التجمع ورقم الكرسي.',
+        likes: 148,
+        likedByMe: false,
+        comments: [
+          { user: 'LaDoDo Land Official', text: 'متاح التحرك من محطات: التحرير، ألماظة، 6 أكتوبر، المنصورة، والإسكندرية 🚌🌟' }
+        ]
+      },
+      {
+        id: 'post-2',
+        author: 'Go Bus × LaDoDo',
+        time: 'أمس • 🚌',
+        content: 'تنبيه هام للمسافرين في رحلة 18 أكتوبر 2026:\nيرجى الحضور إلى محطة جو باص قبل موعد التحرك بـ 30 دقيقة، وإحضار البطاقة الشخصية وتذكرة الحجز الإلكترونية.',
+        likes: 92,
+        likedByMe: false,
+        comments: []
+      }
+    ];
+
+    let posts = [];
+
+    // ================= SUPABASE CLOUD SYNC FUNCTIONS =================
+    function rowToBooking(row) {
+      if (row.raw_data && typeof row.raw_data === 'object' && row.raw_data.id) {
+        return row.raw_data;
+      }
+      return {
+        id: row.id,
+        fullName: row.full_name || '',
+        age: row.age || '',
+        gender: row.gender || 'Male',
+        whatsapp: row.whatsapp || '',
+        email: row.email || '',
+        emergencyName: row.emergency_name || '',
+        emergencyPhone: row.emergency_phone || '',
+        gobusStation: row.gobus_station || '',
+        gobusClass: row.gobus_class || '',
+        medicalNotes: row.medical_notes || 'لا يوجد (None)',
+        createdAt: row.created_at || ''
+      };
+    }
+
+    function bookingToRow(b) {
+      return {
+        id: b.id,
+        full_name: b.fullName,
+        age: String(b.age || ''),
+        gender: b.gender,
+        whatsapp: b.whatsapp,
+        email: b.email,
+        emergency_name: b.emergencyName,
+        emergency_phone: b.emergencyPhone,
+        gobus_station: b.gobusStation,
+        gobus_class: b.gobusClass,
+        medical_notes: b.medicalNotes,
+        created_at: b.createdAt,
+        raw_data: b
+      };
+    }
+
+    function mergeBookingsArrays(cloudArr, localArr) {
+      const map = new Map();
+      (localArr || []).forEach(b => { if (b && b.id) map.set(b.id, b); });
+      (cloudArr || []).forEach(b => { if (b && b.id) map.set(b.id, b); });
+      return Array.from(map.values());
+    }
+
+    async function syncFromSupabaseCloud(showNotification = false) {
+      if (!supabaseClient) return;
+
+      try {
+        const { data, error } = await supabaseClient
+          .from(TABLE_NAME)
+          .select('*');
+
+        if (!error && Array.isArray(data)) {
+          const cloudBookings = data.map(rowToBooking);
+
+          // Automatically upload any local bookings that aren't in the cloud yet
+          const cloudIds = new Set(cloudBookings.map(b => b.id));
+          const unsyncedLocal = bookings.filter(b => b && b.id && !cloudIds.has(b.id));
+          if (unsyncedLocal.length > 0) {
+            await supabaseClient.from(TABLE_NAME).upsert(unsyncedLocal.map(bookingToRow));
+          }
+
+          bookings = mergeBookingsArrays(cloudBookings, unsyncedLocal);
+          syncAllStorageLayers();
+          updateCounters();
+          renderRecentTravelers();
+          if (document.getElementById('adminDashboardModal').classList.contains('active')) {
+            renderAdminTable();
+          }
+
+          if (showNotification) {
+            showToast(`🔄 تم تحديث البيانات من السيرفر بنجاح! (${bookings.length} حجز)`);
+          }
+        }
+      } catch (err) {
+        console.error('Cloud Sync Exception:', err);
+      }
+    }
+
+    async function pushBookingToSupabase(booking) {
+      if (!supabaseClient) return false;
+
+      if (realtimeChannel) {
+        try {
+          realtimeChannel.send({
+            type: 'broadcast',
+            event: 'BOOKING_UPSERT',
+            payload: { booking }
+          });
+        } catch (e) {}
+      }
+
+      try {
+        const { error } = await supabaseClient
+          .from(TABLE_NAME)
+          .upsert([bookingToRow(booking)]);
+        return !error;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function deleteBookingFromSupabase(id) {
+      if (!supabaseClient) return;
+
+      if (realtimeChannel) {
+        try {
+          realtimeChannel.send({
+            type: 'broadcast',
+            event: 'BOOKING_DELETE',
+            payload: { id }
+          });
+        } catch (e) {}
+      }
+
+      try {
+        await supabaseClient.from(TABLE_NAME).delete().eq('id', id);
+      } catch (e) {}
+    }
+
+    async function clearAllFromSupabase() {
+      if (!supabaseClient) return;
+
+      if (realtimeChannel) {
+        try {
+          realtimeChannel.send({
+            type: 'broadcast',
+            event: 'BOOKINGS_CLEAR',
+            payload: {}
+          });
+        } catch (e) {}
+      }
+
+      try {
+        await supabaseClient.from(TABLE_NAME).delete().neq('id', '0');
+      } catch (e) {}
+    }
+
+    function setupSupabaseRealtime() {
+      if (!supabaseClient) return;
+
+      try {
+        realtimeChannel = supabaseClient
+          .channel('ladodo_global_realtime_sync_v4')
+          .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: TABLE_NAME },
+            () => {
+              syncFromSupabaseCloud(false);
+            }
+          )
+          .on('broadcast', { event: 'BOOKING_UPSERT' }, ({ payload }) => {
+            if (payload && payload.booking) {
+              const b = payload.booking;
+              const existingIdx = bookings.findIndex(x => x.id === b.id);
+              if (existingIdx !== -1) {
+                bookings[existingIdx] = b;
+              } else {
+                bookings.unshift(b);
+              }
+              saveBookingsLocalOnly();
+              if (document.getElementById('adminDashboardModal').classList.contains('active')) {
+                renderAdminTable();
+              }
+            }
+          })
+          .on('broadcast', { event: 'BOOKING_DELETE' }, ({ payload }) => {
+            if (payload && payload.id) {
+              bookings = bookings.filter(x => x.id !== payload.id);
+              saveBookingsLocalOnly();
+              if (document.getElementById('adminDashboardModal').classList.contains('active')) {
+                renderAdminTable();
+              }
+            }
+          })
+          .on('broadcast', { event: 'BOOKINGS_CLEAR' }, () => {
+            bookings = [];
+            saveBookingsLocalOnly();
+            if (document.getElementById('adminDashboardModal').classList.contains('active')) {
+              renderAdminTable();
+            }
+          })
+          .on('broadcast', { event: 'REQUEST_PEERS_STATE' }, () => {
+            if (bookings.length > 0 && realtimeChannel) {
+              realtimeChannel.send({
+                type: 'broadcast',
+                event: 'PEERS_STATE_RESPONSE',
+                payload: { bookings }
+              });
+            }
+          })
+          .on('broadcast', { event: 'PEERS_STATE_RESPONSE' }, ({ payload }) => {
+            if (payload && Array.isArray(payload.bookings) && payload.bookings.length > 0) {
+              bookings = mergeBookingsArrays(payload.bookings, bookings);
+              saveBookingsLocalOnly();
+              if (document.getElementById('adminDashboardModal').classList.contains('active')) {
+                renderAdminTable();
+              }
+            }
+          })
+          .subscribe((status) => {
+            if (status === 'SUBSCRIBED') {
+              realtimeChannel.send({
+                type: 'broadcast',
+                event: 'REQUEST_PEERS_STATE',
+                payload: {}
+              });
+            }
+          });
+      } catch (err) {
+        console.error('Realtime subscription error:', err);
+      }
+    }
+
+    // ================= 5-LAYER PERMANENT LOCAL STORAGE ENGINE =================
+    function openIndexedDB() {
+      return new Promise((resolve) => {
+        if (!window.indexedDB) return resolve(null);
+        try {
+          const req = indexedDB.open(IDB_NAME, 1);
+          req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(IDB_STORE)) {
+              db.createObjectStore(IDB_STORE);
+            }
+          };
+          req.onsuccess = (e) => resolve(e.target.result);
+          req.onerror = () => resolve(null);
+        } catch (err) {
+          resolve(null);
+        }
+      });
+    }
+
+    async function saveToIndexedDB(key, val) {
+      const db = await openIndexedDB();
+      if (!db) return;
+      try {
+        const tx = db.transaction(IDB_STORE, 'readwrite');
+        tx.objectStore(IDB_STORE).put(val, key);
+      } catch (e) {}
+    }
+
+    async function loadFromIndexedDB(key) {
+      const db = await openIndexedDB();
+      if (!db) return null;
+      return new Promise((resolve) => {
+        try {
+          const tx = db.transaction(IDB_STORE, 'readonly');
+          const req = tx.objectStore(IDB_STORE).get(key);
+          req.onsuccess = () => resolve(req.result || null);
+          req.onerror = () => resolve(null);
+        } catch (e) {
+          resolve(null);
+        }
+      });
+    }
+
+    function syncAllStorageLayers() {
+      const payload = {
+        bookings: bookings,
+        posts: posts,
+        adminAuth: isAdminAuthenticated,
+        updatedAt: Date.now()
+      };
+      const serialized = JSON.stringify(payload);
+
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings)); } catch (e) {}
+      try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch (e) {}
+      try { localStorage.setItem(ADMIN_AUTH_KEY, isAdminAuthenticated ? '1' : '0'); } catch (e) {}
+      try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(bookings)); } catch (e) {}
+      try { window.name = 'LADODO_STATE::' + serialized; } catch (e) {}
+      try { window.history.replaceState(payload, ''); } catch (e) {}
+
+      saveToIndexedDB(STORAGE_KEY, bookings);
+      saveToIndexedDB(POSTS_KEY, posts);
+    }
+
+    async function restoreFromAllLayers() {
+      let restoredBookings = null;
+      let restoredPosts = null;
+
+      try {
+        const lsB = localStorage.getItem(STORAGE_KEY);
+        if (lsB) restoredBookings = JSON.parse(lsB);
+        const lsP = localStorage.getItem(POSTS_KEY);
+        if (lsP) restoredPosts = JSON.parse(lsP);
+        if (localStorage.getItem(ADMIN_AUTH_KEY) === '1') isAdminAuthenticated = true;
+      } catch (e) {}
+
+      if (!restoredBookings || !restoredBookings.length) {
+        const idbB = await loadFromIndexedDB(STORAGE_KEY);
+        if (Array.isArray(idbB) && idbB.length > 0) restoredBookings = idbB;
+      }
+
+      try {
+        if ((!restoredBookings || !restoredBookings.length) && window.history.state && Array.isArray(window.history.state.bookings)) {
+          restoredBookings = window.history.state.bookings;
+        }
+      } catch (e) {}
+
+      try {
+        if (typeof window.name === 'string' && window.name.startsWith('LADODO_STATE::')) {
+          const parsedWin = JSON.parse(window.name.replace('LADODO_STATE::', ''));
+          if ((!restoredBookings || !restoredBookings.length) && Array.isArray(parsedWin.bookings)) {
+            restoredBookings = parsedWin.bookings;
+          }
+          if (parsedWin.adminAuth) isAdminAuthenticated = true;
+        }
+      } catch (e) {}
+
+      bookings = Array.isArray(restoredBookings) ? restoredBookings : [];
+      posts = (Array.isArray(restoredPosts) && restoredPosts.length) ? restoredPosts : [...DEFAULT_POSTS];
+
+      syncAllStorageLayers();
+    }
+
+    // Load data on startup
+    async function initApp() {
+      await restoreFromAllLayers();
+      updateCounters();
+      renderPosts();
+      renderRecentTravelers();
+
+      await syncFromSupabaseCloud(false);
+      setupSupabaseRealtime();
+
+      // Auto-sync with Supabase Cloud every 10 seconds
+      setInterval(() => {
+        syncFromSupabaseCloud(false);
+      }, 10000);
+    }
+
+    function saveBookingsLocalOnly() {
+      syncAllStorageLayers();
+      updateCounters();
+      renderRecentTravelers();
+    }
+
+    function savePosts() {
+      syncAllStorageLayers();
+    }
+
+    function updateCounters() {
+      const count = bookings.length;
+      document.getElementById('navBookingCount').textContent = count;
+      document.getElementById('fabBookingCount').textContent = count;
+      document.getElementById('sidebarCounter').textContent = count;
+    }
+
+    // Handle Form Submission
+    async function handleBookingSubmit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('submitBookingBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'JOINING THE LEAGUE...';
+
+      const newBooking = {
+        id: 'LDD-' + Math.floor(1000 + Math.random() * 9000),
+        fullName: document.getElementById('fullName').value.trim(),
+        age: document.getElementById('age').value.trim(),
+        gender: document.getElementById('gender').value,
+        whatsapp: document.getElementById('whatsapp').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        emergencyName: document.getElementById('emergencyName').value.trim(),
+        emergencyPhone: document.getElementById('emergencyPhone').value.trim(),
+        gobusStation: document.getElementById('gobusStation').value,
+        gobusClass: document.getElementById('gobusClass').value,
+        medicalNotes: document.getElementById('medicalNotes').value.trim() || 'لا يوجد (None)',
+        createdAt: new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })
+      };
+
+      bookings.unshift(newBooking);
+      saveBookingsLocalOnly();
+
+      await pushBookingToSupabase(newBooking);
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'JOIN THE LEAGUE';
+      document.getElementById('dahabBookingForm').reset();
+
+      // Show Clean Boarding Pass Ticket Modal (No technical messages shown to users)
+      const ticketBox = document.getElementById('ticketDetailsBox');
+      ticketBox.innerHTML = `
+        <div>🎫 <strong>رقم التذكرة:</strong> <span style="color:var(--ladodo-pink);font-weight:900;">${escapeHTML(newBooking.id)}</span></div>
+        <div>👤 <strong>الاسم الكامل:</strong> ${escapeHTML(newBooking.fullName)}</div>
+        <div>🎂 <strong>السن / النوع:</strong> ${escapeHTML(newBooking.age)} سنة (${escapeHTML(newBooking.gender)})</div>
+        <div>📱 <strong>رقم الواتساب:</strong> <span dir="ltr">${escapeHTML(newBooking.whatsapp)}</span></div>
+        <div>🚌 <strong>محطة Go Bus:</strong> ${escapeHTML(newBooking.gobusStation)}</div>
+        <div>💺 <strong>الدرجة:</strong> ${escapeHTML(newBooking.gobusClass)}</div>
+        <div>🚨 <strong>طوارئ:</strong> ${escapeHTML(newBooking.emergencyName)} (<span dir="ltr">${escapeHTML(newBooking.emergencyPhone)}</span>)</div>
+      `;
+      openModal('ticketModal');
+      showToast('✅ تم تسجيل حجزك بنجاح!');
+    }
+
+    // Render Recent Travelers in Left Sidebar
+    function renderRecentTravelers() {
+      const container = document.getElementById('recentTravelersWidget');
+      if (!bookings.length) {
+        container.innerHTML = '<div style="color:var(--fb-subtext);padding:6px 0;">لا توجد حجوزات مسجلة حتى الآن. كن أول المسجلين! 🐰🚌</div>';
+        return;
+      }
+      container.innerHTML = bookings.slice(0, 5).map(b => `
+        <div style="display:flex;align-items:center;gap:8px;padding:6px;border-radius:8px;background:var(--fb-bg);">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--ladodo-pink-soft);color:var(--ladodo-pink);display:flex;align-items:center;justify-content:center;font-weight:800;">
+            ${b.gender === 'Female' ? '👩' : '👨'}
+          </div>
+          <div style="flex:1;overflow:hidden;">
+            <div style="font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHTML(b.fullName)}</div>
+            <div style="font-size:0.74rem;color:var(--fb-subtext);">${escapeHTML(b.gobusStation)}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render Facebook Posts
+    function renderPosts(filterQuery = '') {
+      const container = document.getElementById('communityPostsSection');
+      const q = filterQuery.trim().toLowerCase();
+
+      const filtered = posts.filter(p =>
+        !q || p.content.toLowerCase().includes(q) || p.author.toLowerCase().includes(q)
+      );
+
+      container.innerHTML = filtered.map((post, idx) => `
+        <article class="fb-post-card">
+          <div class="post-header">
+            <div class="post-author">
+              <div class="author-thumb">🐰</div>
+              <div class="author-meta">
+                <h4>${escapeHTML(post.author)} <span class="verified-tick">✓</span></h4>
+                <span>${escapeHTML(post.time)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-content">${escapeHTML(post.content)}</div>
+
+          <div class="post-stats">
+            <span>❤️👍 ${post.likes} تفاعل</span>
+            <span>${post.comments.length} تعليقات</span>
+          </div>
+
+          <div class="post-actions-bar">
+            <button class="post-action-btn ${post.likedByMe ? 'liked' : ''}" onclick="toggleLike(${idx})">
+              ${post.likedByMe ? '❤️ أعجبني' : '👍 أعجبني'}
+            </button>
+            <button class="post-action-btn" onclick="document.getElementById('commentInput-${idx}').focus()">
+              💬 تعليق
+            </button>
+            <button class="post-action-btn" onclick="shareWebsite()">
+              ↗️ مشاركة
+            </button>
+          </div>
+
+          <div class="comments-section">
+            ${post.comments.map(c => `
+              <div class="comment-item">
+                <div class="comment-bubble">
+                  <strong>${escapeHTML(c.user)}</strong>
+                  <span>${escapeHTML(c.text)}</span>
+                </div>
+              </div>
+            `).join('')}
+
+            <div class="comment-input-row">
+              <input type="text" id="commentInput-${idx}" placeholder="اكتب تعليقاً..." onkeydown="if(event.key==='Enter') addComment(${idx})" />
+              <button class="fb-btn fb-btn-primary" onclick="addComment(${idx})">نشر</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function toggleLike(idx) {
+      posts[idx].likedByMe = !posts[idx].likedByMe;
+      posts[idx].likes += posts[idx].likedByMe ? 1 : -1;
+      savePosts();
+      renderPosts();
+    }
+
+    function addComment(idx) {
+      const inp = document.getElementById(`commentInput-${idx}`);
+      const text = inp.value.trim();
+      if (!text) return;
+      posts[idx].comments.push({ user: 'مسافر LaDoDo', text });
+      inp.value = '';
+      savePosts();
+      renderPosts();
+      showToast('💬 تم نشر تعليقك!');
+    }
+
+    function filterFeedPosts(val) {
+      renderPosts(val);
+    }
+
+    // ================= ADMIN PANEL LOGIC =================
+    async function openAdminModal() {
+      if (isAdminAuthenticated) {
+        await syncFromSupabaseCloud(false);
+        renderAdminTable();
+        openModal('adminDashboardModal');
+      } else {
+        document.getElementById('adminPassInput').value = '';
+        document.getElementById('loginErrorMsg').style.display = 'none';
+        openModal('adminLoginModal');
+        setTimeout(() => document.getElementById('adminPassInput').focus(), 100);
+      }
+    }
+
+    async function verifyEncryptedAdminPassword(e) {
+      e.preventDefault();
+      const inputVal = document.getElementById('adminPassInput').value;
+
+      if (checkEncryptedPassword(inputVal)) {
+        isAdminAuthenticated = document.getElementById('rememberAdminCheck').checked;
+        syncAllStorageLayers();
+        closeModal('adminLoginModal');
+        await syncFromSupabaseCloud(false);
+        renderAdminTable();
+        openModal('adminDashboardModal');
+        showToast('🔓 مرحباً بك في لوحة تحكم LaDoDo Land!');
+      } else {
+        document.getElementById('loginErrorMsg').style.display = 'block';
+      }
+    }
+
+    function togglePassVisibility() {
+      const inp = document.getElementById('adminPassInput');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    function renderAdminTable() {
+      const searchQ = (document.getElementById('adminSearchInput')?.value || '').trim().toLowerCase();
+      const genderFilter = document.getElementById('adminGenderFilter')?.value || 'ALL';
+      const stationFilter = document.getElementById('adminStationFilter')?.value || 'ALL';
+
+      document.getElementById('statTotal').textContent = bookings.length;
+      document.getElementById('statMale').textContent = bookings.filter(b => b.gender === 'Male').length;
+      document.getElementById('statFemale').textContent = bookings.filter(b => b.gender === 'Female').length;
+      document.getElementById('statMedical').textContent = bookings.filter(b =>
+        b.medicalNotes && b.medicalNotes !== 'لا يوجد (None)' && b.medicalNotes.toLowerCase() !== 'no allergies'
+      ).length;
+
+      const filtered = bookings.filter(b => {
+        const matchesSearch = !searchQ ||
+          (b.fullName || '').toLowerCase().includes(searchQ) ||
+          (b.whatsapp || '').toLowerCase().includes(searchQ) ||
+          (b.email || '').toLowerCase().includes(searchQ) ||
+          (b.id || '').toLowerCase().includes(searchQ);
+        const matchesGender = genderFilter === 'ALL' || b.gender === genderFilter;
+        const matchesStation = stationFilter === 'ALL' || b.gobusStation === stationFilter;
+        return matchesSearch && matchesGender && matchesStation;
+      });
+
+      const tbody = document.getElementById('adminTableBody');
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:32px;color:var(--fb-subtext);font-weight:700;">لا توجد حجوزات مسجلة حالياً. أي شخص يسجل في النموذج ستظهر بياناته هنا فوراً.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((b, index) => {
+        const cleanPhone = (b.whatsapp || '').replace(/[^0-9]/g, '');
+        return `
+          <tr>
+            <td><strong>${index + 1}</strong></td>
+            <td><span class="status-pill status-confirmed">${escapeHTML(b.id)}</span></td>
+            <td><strong>${escapeHTML(b.fullName)}</strong></td>
+            <td>${escapeHTML(b.age)} سنة • ${b.gender === 'Female' ? 'أنثى 👩' : 'ذكر 👨'}</td>
+            <td>
+              <a href="https://wa.me/${cleanPhone}" target="_blank" style="color:var(--success);font-weight:700;text-decoration:none;" dir="ltr">
+                📱 ${escapeHTML(b.whatsapp)}
+              </a>
+            </td>
+            <td dir="ltr">${escapeHTML(b.email)}</td>
+            <td>
+              <div>${escapeHTML(b.emergencyName)}</div>
+              <small style="color:var(--fb-subtext);" dir="ltr">${escapeHTML(b.emergencyPhone)}</small>
+            </td>
+            <td>
+              <div><strong>${escapeHTML(b.gobusStation)}</strong></div>
+              <small style="color:var(--fb-blue);">${escapeHTML(b.gobusClass)}</small>
+            </td>
+            <td style="max-width:190px;">${escapeHTML(b.medicalNotes)}</td>
+            <td dir="ltr" style="font-size:0.78rem;color:var(--fb-subtext);">${escapeHTML(b.createdAt)}</td>
+            <td style="white-space:nowrap;">
+              <button class="fb-btn" style="background:#dbeafe;color:#1d4ed8;padding:5px 10px;font-size:0.78rem;margin-left:4px;" onclick="openEditBookingModal('${b.id}')">تعديل ✏️</button>
+              <button class="fb-btn" style="background:#fee2e2;color:#b91c1c;padding:5px 10px;font-size:0.78rem;" onclick="deleteBooking('${b.id}')">حذف 🗑️</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openEditBookingModal(bookingId) {
+      if (!bookingId) {
+        document.getElementById('editModalTitle').textContent = '➕ إضافة حجز جديد يدوياً';
+        document.getElementById('editBookingId').value = '';
+        document.getElementById('editFullName').value = '';
+        document.getElementById('editAge').value = '';
+        document.getElementById('editGender').value = 'Male';
+        document.getElementById('editWhatsapp').value = '';
+        document.getElementById('editEmail').value = '';
+        document.getElementById('editEmergencyName').value = '';
+        document.getElementById('editEmergencyPhone').value = '';
+        document.getElementById('editGobusStation').value = 'Tahrir - Abdel Moneim Riad';
+        document.getElementById('editGobusClass').value = 'Go Bus Elite Plus - Window';
+        document.getElementById('editMedicalNotes').value = '';
+      } else {
+        const target = bookings.find(b => b.id === bookingId);
+        if (!target) return;
+        document.getElementById('editModalTitle').textContent = `✏️ تعديل بيانات التذكرة (${target.id})`;
+        document.getElementById('editBookingId').value = target.id;
+        document.getElementById('editFullName').value = target.fullName;
+        document.getElementById('editAge').value = target.age;
+        document.getElementById('editGender').value = target.gender;
+        document.getElementById('editWhatsapp').value = target.whatsapp;
+        document.getElementById('editEmail').value = target.email;
+        document.getElementById('editEmergencyName').value = target.emergencyName;
+        document.getElementById('editEmergencyPhone').value = target.emergencyPhone;
+        document.getElementById('editGobusStation').value = target.gobusStation;
+        document.getElementById('editGobusClass').value = target.gobusClass;
+        document.getElementById('editMedicalNotes').value = target.medicalNotes === 'لا يوجد (None)' ? '' : target.medicalNotes;
+      }
+      openModal('editBookingModal');
+    }
+
+    async function saveEditedBooking(e) {
+      e.preventDefault();
+      const id = document.getElementById('editBookingId').value;
+      const updatedData = {
+        fullName: document.getElementById('editFullName').value.trim(),
+        age: document.getElementById('editAge').value.trim(),
+        gender: document.getElementById('editGender').value,
+        whatsapp: document.getElementById('editWhatsapp').value.trim(),
+        email: document.getElementById('editEmail').value.trim(),
+        emergencyName: document.getElementById('editEmergencyName').value.trim(),
+        emergencyPhone: document.getElementById('editEmergencyPhone').value.trim(),
+        gobusStation: document.getElementById('editGobusStation').value,
+        gobusClass: document.getElementById('editGobusClass').value,
+        medicalNotes: document.getElementById('editMedicalNotes').value.trim() || 'لا يوجد (None)'
+      };
+
+      let targetRecord = null;
+
+      if (!id) {
+        targetRecord = {
+          id: 'LDD-' + Math.floor(1000 + Math.random() * 9000),
+          ...updatedData,
+          createdAt: new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })
+        };
+        bookings.unshift(targetRecord);
+      } else {
+        const idx = bookings.findIndex(b => b.id === id);
+        if (idx !== -1) {
+          bookings[idx] = { ...bookings[idx], ...updatedData };
+          targetRecord = bookings[idx];
+        }
+      }
+
+      saveBookingsLocalOnly();
+      if (targetRecord) {
+        await pushBookingToSupabase(targetRecord);
+      }
+      renderAdminTable();
+      closeModal('editBookingModal');
+      showToast('✅ تم حفظ البيانات بنجاح!');
+    }
+
+    async function deleteBooking(id) {
+      if (!confirm('هل أنت متأكد من حذف هذا الحجز نهائياً؟')) return;
+      bookings = bookings.filter(b => b.id !== id);
+      saveBookingsLocalOnly();
+      await deleteBookingFromSupabase(id);
+      renderAdminTable();
+      showToast('🗑️ تم حذف الحجز بنجاح.');
+    }
+
+    async function clearAllBookings() {
+      if (!confirm('تحذير: هل تريد مسح جميع الحجوزات المسجلة بالكامل؟')) return;
+      bookings = [];
+      saveBookingsLocalOnly();
+      await clearAllFromSupabase();
+      renderAdminTable();
+      showToast('🗑️ تم مسح جميع البيانات.');
+    }
+
+    // Export CSV (Excel Compatible with UTF-8 BOM)
+    function exportToCSV() {
+      if (!bookings.length) {
+        showToast('⚠️ لا توجد بيانات لتصديرها!');
+        return;
+      }
+      const headers = ['Ticket ID', 'Full Name', 'Age', 'Gender', 'WhatsApp', 'Email', 'Emergency Contact Name', 'Emergency Contact Phone', 'Go Bus Station', 'Bus Class', 'Medical Notes', 'Registration Date'];
+      const rows = bookings.map(b => [
+        b.id, b.fullName, b.age, b.gender, b.whatsapp, b.email, b.emergencyName, b.emergencyPhone, b.gobusStation, b.gobusClass, b.medicalNotes, b.createdAt
+      ].map(field => `"${String(field || '').replace(/"/g, '""')}"`).join(','));
+
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `LaDoDo_Land_GoBus_Bookings_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('📥 تم تحميل ملف الإكسل (CSV) بنجاح!');
+    }
+
+    // Export JSON Backup
+    function exportToJSON() {
+      const dataStr = JSON.stringify(bookings, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `LaDoDo_Land_Backup_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('📦 تم حفظ نسخة احتياطية JSON!');
+    }
+
+    // Import JSON Backup & Sync to Supabase
+    function importFromJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (Array.isArray(imported)) {
+            bookings = mergeBookingsArrays(imported, bookings);
+            saveBookingsLocalOnly();
+            if (supabaseClient && imported.length > 0) {
+              await supabaseClient.from(TABLE_NAME).upsert(imported.map(bookingToRow));
+            }
+            renderAdminTable();
+            showToast('✅ تم استيراد البيانات وحفظها بنجاح!');
+          } else {
+            alert('ملف JSON غير صالح.');
+          }
+        } catch (err) {
+          alert('حدث خطأ أثناء قراءة الملف.');
+        }
+        event.target.value = '';
+      };
+      reader.readAsText(file);
+    }
+
+    function printAdminTable() {
+      window.print();
+    }
+
+    // UI Helpers
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
+      showToast(isDark ? '🌙 تم تفعيل الوضع الليلي' : '☀️ تم تفعيل الوضع النهاري');
+    }
+
+    function scrollToSection(id) {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function switchTab(btn, tab) {
+      document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function shareWebsite() {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href);
+      }
+      showToast('🔗 تم نسخ رابط موقع LaDoDo Land للمشاركة!');
+    }
+
+    function showRandomNotification() {
+      document.getElementById('notifBadge').style.display = 'none';
+      showToast(`🔔 لديك ${bookings.length} حجوزات مسجلة في رحلة دهب 18 أكتوبر!`);
+    }
+
+    function exportBookingsCSVPublicNotice() {
+      scrollToSection('bookingFormSection');
+      showToast('🎫 املأ بياناتك بالأسفل وستظهر تذكرتك فوراً!');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toastBox');
+      t.textContent = msg;
+      t.style.display = 'block';
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => { t.style.display = 'none'; }, 3500);
+    }
+
+    function escapeHTML(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
