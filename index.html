@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Go Bus Office</title>
+  <title>LaDoDo Land 🌐</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <!-- مكتبة سيرفر Supabase الرسمية -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -365,11 +365,6 @@
       font-family: 'Inter', 'Cairo', sans-serif;
     }
 
-    .cover-text p {
-      font-size: 0.95rem;
-      opacity: 0.92;
-    }
-
     .profile-bar {
       padding: 16px 24px;
       display: flex;
@@ -560,7 +555,7 @@
       color: #94a3b8;
     }
 
-    .office-pill {
+    .ladodo-pill {
       background: linear-gradient(90deg, #e11d48, #fb7185);
       color: #fff;
       padding: 5px 14px;
@@ -581,7 +576,7 @@
       align-items: center;
     }
 
-    /* CUTE PINK BUNNY MASCOT PEEKING FROM THE LEFT LIKE THE PHOTO */
+    /* CUTE PINK BUNNY MASCOT (LaDoDo) PEEKING FROM THE LEFT LIKE THE PHOTO */
     .ladodo-mascot-peeking {
       position: absolute;
       left: -82px;
@@ -1102,13 +1097,13 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <link rel="manifest" href="./manifest.json?v=v1791994836472">
+    <link rel="manifest" href="./manifest.json?v=v1791995569330">
     <meta name="theme-color" content="#00ffff">
-    <link rel="apple-touch-icon" href="./icon-192.png?v=v1791994836472">
+    <link rel="apple-touch-icon" href="./icon-192.png?v=v1791995569330">
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js?v=v1791994836472')
+          navigator.serviceWorker.register('./sw.js?v=v1791995569330')
             .then(reg => console.log('SW Registered'))
             .catch(err => console.log('SW Failed', err));
         });
@@ -1122,11 +1117,11 @@
     <div class="nav-right">
       <div class="brand-logo" onclick="scrollToSection('top')">
         <div class="brand-icon">🐰</div>
-        <span class="brand-name">Go Bus Office</span>
+        <span class="brand-name">LaDoDo Land</span>
       </div>
       <div class="fb-search">
         <span class="search-ico">🔍</span>
-        <input type="text" id="globalSearchInput" placeholder="ابحث في Go Bus Office..." oninput="filterFeedPosts(this.value)" />
+        <input type="text" id="globalSearchInput" placeholder="ابحث في LaDoDo Land..." oninput="filterFeedPosts(this.value)" />
       </div>
     </div>
 
@@ -1167,7 +1162,7 @@
       <div class="sidebar-card">
         <a class="sidebar-menu-item" href="#bookingFormSection">
           <div class="ico" style="background:#ffe3f1;color:#d61f69;">🐰</div>
-          <span>Go Bus Office Official</span>
+          <span>LaDoDo Land Official</span>
         </a>
         <a class="sidebar-menu-item" href="#bookingFormSection">
           <div class="ico" style="background:#dbeafe;color:#1d4ed8;">📝</div>
@@ -1210,8 +1205,8 @@
       <div class="profile-header-card">
         <div class="cover-photo">
           <div class="cover-text">
-            <div class="cover-badge">🌐 Go Bus Office • Dahab Adventure League</div>
-            <h1>Go Bus Office</h1>
+            <div class="cover-badge">🌐 LaDoDo Land • Dahab Adventure League</div>
+            <h1>LaDoDo Land</h1>
           </div>
           <!-- Cute SVG Mascot in Cover -->
           <svg width="110" height="110" viewBox="0 0 120 120" style="position:relative;z-index:2;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.3));">
@@ -1231,15 +1226,15 @@
 
         <div class="profile-bar">
           <div class="profile-Identity">
-            <div class="profile-avatar" title="Go Bus Office">
+            <div class="profile-avatar" title="LaDoDo Land">
               <span style="font-size:2.3rem;">🐰</span>
             </div>
             <div>
               <h2 style="font-size:1.3rem;font-weight:900;display:flex;align-items:center;gap:6px;">
-                Go Bus Office
+                LaDoDo Land
                 <span class="verified-tick" title="موثق">✓</span>
               </h2>
-              <p style="font-size:0.83rem;color:var(--fb-subtext);">@GoBusOffice • التسجيل الرسمي</p>
+              <p style="font-size:0.83rem;color:var(--fb-subtext);">@LaDoDoLand • التسجيل الرسمي</p>
             </div>
           </div>
 
@@ -1263,7 +1258,7 @@
           <div class="vodafone-badge-icon">💳</div>
           <div>
             <h3 style="font-size:1.05rem;font-weight:900;">رقم التحويل (فودافون كاش وجميع المحافظ الإلكترونية)</h3>
-            <p style="font-size:0.84rem;color:var(--fb-subtext);">انسخ الرقم للتحويل المباشر، أو تواصل معنا عبر واتساب لتأكيد الحجز والاستفسار:</p>
+            <p style="font-size:0.84rem;color:var(--fb-subtext);">انسخ الرقم للتحويل المباشر، أو تواصل معنا عبر واتساب لتأكيد التسجيل والاستفسار:</p>
             <div class="wallet-number-box" id="walletNumberText" onclick="copyWalletNumber()" title="اضغط لنسخ الرقم">+201000446169</div>
           </div>
         </div>
@@ -1285,7 +1280,7 @@
             <div style="font-weight:800;font-size:1.15rem;color:#fff;">Dahab Adventure League</div>
             <div class="sub-note">Sign up before October 18 when registration closes.</div>
           </div>
-          <span class="office-pill">🌐 Go Bus Office</span>
+          <span class="ladodo-pill">🌐 LaDoDo Land</span>
         </div>
 
         <div class="form-stage">
@@ -1429,11 +1424,11 @@
   <div class="modal-overlay" id="adminLoginModal">
     <div class="modal-card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <h3 style="font-size:1.15rem;display:flex;align-items:center;gap:8px;">🔐 دخول لوحة تحكم Go Bus Office</h3>
+        <h3 style="font-size:1.15rem;display:flex;align-items:center;gap:8px;">🔐 دخول لوحة تحكم LaDoDo Land</h3>
         <button class="circle-btn" style="width:32px;height:32px;" onclick="closeModal('adminLoginModal')">✕</button>
       </div>
       <p style="font-size:0.86rem;color:var(--fb-subtext);margin-bottom:14px;">
-        هذه اللوحة محمية بتشفير ذكي لعرض وإدارة كافة البيانات الأساسية التي سجلها العملاء.
+        هذه اللوحة محمية بتشفير ذكي لعرض وإدارة كافة البيانات الأساسية التي سجلها المشتركون.
       </p>
       <form onsubmit="verifyEncryptedAdminPassword(event)">
         <div style="margin-bottom:14px;">
@@ -1464,14 +1459,14 @@
     <div class="modal-card dashboard-wide">
       <div class="dashboard-header">
         <div>
-          <h2 style="font-size:1.25rem;font-weight:900;">🌐 لوحة تحكم Go Bus Office - بيانات المسجلين</h2>
+          <h2 style="font-size:1.25rem;font-weight:900;">🌐 لوحة تحكم LaDoDo Land - بيانات المسجلين</h2>
           <p style="font-size:0.8rem;opacity:0.95;">
             ☁️ متصل بالسيرفر السحابي: otudnzaslvblfwfxqdjj.supabase.co • مزامنة فورية لجميع الأجهزة
           </p>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="fb-btn" style="background:#0ea5e9;color:#fff;" onclick="syncFromSupabaseCloud(true)">🔄 تحديث البيانات</button>
-          <button class="fb-btn" style="background:#22c55e;color:#fff;" onclick="openEditBookingModal(null)">➕ إضافة عميل يدوياً</button>
+          <button class="fb-btn" style="background:#22c55e;color:#fff;" onclick="openEditBookingModal(null)">➕ إضافة مشترك يدوياً</button>
           <button class="fb-btn fb-btn-pink" onclick="exportToCSV()">📥 تصدير Excel (CSV)</button>
           <button class="fb-btn fb-btn-secondary" style="background:#fff;color:#0f172a;" onclick="exportToJSON()">📦 حفظ نسخة JSON</button>
           <label class="fb-btn fb-btn-secondary" style="background:#fff;color:#0f172a;cursor:pointer;">
@@ -1519,7 +1514,7 @@
           </div>
         </div>
 
-        <!-- Complete Bookings Table (Basic Fields Only) -->
+        <!-- Complete Registrations Table (Basic Fields Only) -->
         <div class="data-table-wrap">
           <table class="admin-table">
             <thead>
@@ -1543,11 +1538,11 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 3: EDIT / ADD BOOKING MODAL (BASIC FIELDS ONLY) ================= -->
+  <!-- ================= MODAL 3: EDIT / ADD REGISTRATION MODAL (BASIC FIELDS ONLY) ================= -->
   <div class="modal-overlay" id="editBookingModal">
     <div class="modal-card" style="max-width:560px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-        <h3 id="editModalTitle" style="font-size:1.1rem;font-weight:900;">✏️ تعديل بيانات العميل</h3>
+        <h3 id="editModalTitle" style="font-size:1.1rem;font-weight:900;">✏️ تعديل بيانات المشترك</h3>
         <button class="circle-btn" style="width:32px;height:32px;" onclick="closeModal('editBookingModal')">✕</button>
       </div>
       <form onsubmit="saveEditedBooking(event)">
@@ -1601,8 +1596,8 @@
   <div class="modal-overlay" id="ticketModal">
     <div class="modal-card" style="max-width:500px;text-align:center;">
       <div style="font-size:2.6rem;margin-bottom:6px;">🎉✅</div>
-      <h3 style="font-size:1.3rem;font-weight:900;color:var(--fb-blue);margin-bottom:4px;">تم تسجيل بياناتك بنجاح في Go Bus Office!</h3>
-      <p style="font-size:0.86rem;color:var(--fb-subtext);margin-bottom:14px;">يرجى تحويل رسوم الاشتراك عبر فودافون كاش أو المحافظ الإلكترونية وتأكيد الحجز عبر واتساب</p>
+      <h3 style="font-size:1.3rem;font-weight:900;color:var(--fb-blue);margin-bottom:4px;">تم تسجيل بياناتك بنجاح في LaDoDo Land!</h3>
+      <p style="font-size:0.86rem;color:var(--fb-subtext);margin-bottom:14px;">يرجى تحويل رسوم الاشتراك عبر فودافون كاش أو المحافظ الإلكترونية وتأكيد التسجيل عبر واتساب</p>
       
       <div id="ticketDetailsBox" style="background:var(--fb-bg);border:2px dashed var(--ladodo-pink);border-radius:12px;padding:16px;text-align:right;font-size:0.88rem;margin-bottom:16px;display:flex;flex-direction:column;gap:6px;">
       </div>
@@ -1649,10 +1644,10 @@
     }
 
     // 2. LOCAL KEYS & ENCRYPTED PASSWORD ("Ladodoland2026Oct18")
-    const STORAGE_KEY = 'gobus_office_real_bookings_v5';
-    const POSTS_KEY = 'gobus_office_fb_posts_v5';
-    const ADMIN_AUTH_KEY = 'gobus_office_admin_auth_v5';
-    const IDB_NAME = 'GoBusOfficePermanentDB_v5';
+    const STORAGE_KEY = 'ladodo_land_real_bookings_v6';
+    const POSTS_KEY = 'ladodo_land_fb_posts_v6';
+    const ADMIN_AUTH_KEY = 'ladodo_land_admin_auth_v6';
+    const IDB_NAME = 'LaDoDoLandPermanentDB_v6';
     const IDB_STORE = 'app_state_store';
 
     const ENCRYPTED_PASS_BYTES = [102, 75, 78, 69, 78, 69, 70, 75, 68, 78, 24, 26, 24, 28, 101, 73, 94, 27, 18];
@@ -1674,13 +1669,13 @@
     const DEFAULT_POSTS = [
       {
         id: 'post-1',
-        author: 'Go Bus Office',
+        author: 'LaDoDo Land',
         time: 'منذ ساعتين • 🌐',
-        content: 'أهلاً بكم في Go Bus Office! 🌴🐰\nتم فتح باب التسجيل رسمياً في Dahab Adventure League.\nيرجى ملء استمارة البيانات الأساسية في الأعلى، والتحويل على رقم المحافظ وفودافون كاش (+201000446169) ثم التواصل معنا مباشرة عبر واتساب.',
+        content: 'أهلاً بكم في LaDoDo Land! 🌴🐰\nتم فتح باب التسجيل رسمياً في Dahab Adventure League.\nيرجى ملء استمارة البيانات الأساسية في الأعلى، والتحويل على رقم المحافظ وفودافون كاش (+201000446169) ثم التواصل معنا مباشرة عبر واتساب.',
         likes: 154,
         likedByMe: false,
         comments: [
-          { user: 'Go Bus Office', text: 'للتواصل المباشر عبر واتساب أو الاستفسار: +201000446169 💬' }
+          { user: 'LaDoDo Land', text: 'للتواصل المباشر عبر واتساب أو الاستفسار: +201000446169 💬' }
         ]
       }
     ];
@@ -1788,8 +1783,6 @@
         email: b.email,
         emergency_name: b.emergencyName,
         emergency_phone: b.emergencyPhone,
-        gobus_station: '',
-        gobus_class: '',
         medical_notes: b.medicalNotes,
         created_at: b.createdAt,
         raw_data: b
@@ -1901,7 +1894,7 @@
 
       try {
         realtimeChannel = supabaseClient
-          .channel('gobus_office_realtime_sync_v5')
+          .channel('ladodo_land_realtime_sync_v6')
           .on(
             'postgres_changes',
             { event: '*', schema: 'public', table: TABLE_NAME },
@@ -2029,7 +2022,7 @@
       try { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); } catch (e) {}
       try { localStorage.setItem(ADMIN_AUTH_KEY, isAdminAuthenticated ? '1' : '0'); } catch (e) {}
       try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(bookings)); } catch (e) {}
-      try { window.name = 'GOBUS_OFFICE_STATE::' + serialized; } catch (e) {}
+      try { window.name = 'LADODO_LAND_STATE::' + serialized; } catch (e) {}
       try { window.history.replaceState(payload, ''); } catch (e) {}
 
       saveToIndexedDB(STORAGE_KEY, bookings);
@@ -2041,7 +2034,7 @@
       let restoredPosts = null;
 
       try {
-        const lsB = localStorage.getItem(STORAGE_KEY);
+        const lsB = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('ladodo_land_real_bookings_v4');
         if (lsB) restoredBookings = JSON.parse(lsB);
         const lsP = localStorage.getItem(POSTS_KEY);
         if (lsP) restoredPosts = JSON.parse(lsP);
@@ -2060,8 +2053,8 @@
       } catch (e) {}
 
       try {
-        if (typeof window.name === 'string' && window.name.startsWith('GOBUS_OFFICE_STATE::')) {
-          const parsedWin = JSON.parse(window.name.replace('GOBUS_OFFICE_STATE::', ''));
+        if (typeof window.name === 'string' && window.name.startsWith('LADODO_LAND_STATE::')) {
+          const parsedWin = JSON.parse(window.name.replace('LADODO_LAND_STATE::', ''));
           if ((!restoredBookings || !restoredBookings.length) && Array.isArray(parsedWin.bookings)) {
             restoredBookings = parsedWin.bookings;
           }
@@ -2115,7 +2108,7 @@
       submitBtn.textContent = 'JOINING THE LEAGUE...';
 
       const newBooking = {
-        id: 'GBO-' + Math.floor(1000 + Math.random() * 9000),
+        id: 'LDD-' + Math.floor(1000 + Math.random() * 9000),
         fullName: document.getElementById('fullName').value.trim(),
         age: document.getElementById('age').value.trim(),
         gender: document.getElementById('gender').value,
@@ -2147,7 +2140,7 @@
         <div>🩺 <strong>ملاحظات طبية:</strong> ${escapeHTML(newBooking.medicalNotes)}</div>
       `;
       openModal('ticketModal');
-      showToast('✅ تم تسجيل بياناتك بنجاح!');
+      showToast('✅ تم تسجيل بياناتك بنجاح في LaDoDo Land!');
     }
 
     // Render Recent Registrations in Left Sidebar
@@ -2240,7 +2233,7 @@
       const inp = document.getElementById(`commentInput-${idx}`);
       const text = inp.value.trim();
       if (!text) return;
-      posts[idx].comments.push({ user: 'عميل Go Bus Office', text });
+      posts[idx].comments.push({ user: 'عضو LaDoDo Land', text });
       inp.value = '';
       savePosts();
       renderPosts();
@@ -2276,7 +2269,7 @@
         await syncFromSupabaseCloud(false);
         renderAdminTable();
         openModal('adminDashboardModal');
-        showToast('🔓 مرحباً بك في لوحة تحكم Go Bus Office!');
+        showToast('🔓 مرحباً بك في لوحة تحكم LaDoDo Land!');
       } else {
         document.getElementById('loginErrorMsg').style.display = 'block';
       }
@@ -2310,7 +2303,7 @@
 
       const tbody = document.getElementById('adminTableBody');
       if (!filtered.length) {
-        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:32px;color:var(--fb-subtext);font-weight:700;">لا توجد بيانات مسجلة حالياً. أي عميل يسجل في النموذج ستظهر بياناته الأساسية هنا فوراً.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:32px;color:var(--fb-subtext);font-weight:700;">لا توجد بيانات مسجلة حالياً. أي مشترك يسجل في النموذج ستظهر بياناته الأساسية هنا فوراً.</td></tr>`;
         return;
       }
 
@@ -2345,7 +2338,7 @@
 
     function openEditBookingModal(bookingId) {
       if (!bookingId) {
-        document.getElementById('editModalTitle').textContent = '➕ إضافة عميل جديد يدوياً';
+        document.getElementById('editModalTitle').textContent = '➕ إضافة مشترك جديد يدوياً';
         document.getElementById('editBookingId').value = '';
         document.getElementById('editFullName').value = '';
         document.getElementById('editAge').value = '';
@@ -2358,7 +2351,7 @@
       } else {
         const target = bookings.find(b => b.id === bookingId);
         if (!target) return;
-        document.getElementById('editModalTitle').textContent = `✏️ تعديل بيانات العميل (${target.id})`;
+        document.getElementById('editModalTitle').textContent = `✏️ تعديل بيانات المشترك (${target.id})`;
         document.getElementById('editBookingId').value = target.id;
         document.getElementById('editFullName').value = target.fullName;
         document.getElementById('editAge').value = target.age;
@@ -2390,7 +2383,7 @@
 
       if (!id) {
         targetRecord = {
-          id: 'GBO-' + Math.floor(1000 + Math.random() * 9000),
+          id: 'LDD-' + Math.floor(1000 + Math.random() * 9000),
           ...updatedData,
           createdAt: new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })
         };
@@ -2446,7 +2439,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `GoBus_Office_Registrations_${new Date().toISOString().slice(0,10)}.csv`;
+      a.download = `LaDoDo_Land_Registrations_${new Date().toISOString().slice(0,10)}.csv`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -2460,7 +2453,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `GoBus_Office_Backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.download = `LaDoDo_Land_Backup_${new Date().toISOString().slice(0,10)}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -2528,12 +2521,12 @@
       if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
         navigator.clipboard.writeText(window.location.href).catch(() => {});
       }
-      showToast('🔗 تم نسخ رابط موقع Go Bus Office للمشاركة!');
+      showToast('🔗 تم نسخ رابط موقع LaDoDo Land للمشاركة!');
     }
 
     function showRandomNotification() {
       document.getElementById('notifBadge').style.display = 'none';
-      showToast(`🔔 لديك ${bookings.length} مسجلين حالياً في Go Bus Office!`);
+      showToast(`🔔 لديك ${bookings.length} مسجلين حالياً في LaDoDo Land!`);
     }
 
     function showToast(msg) {

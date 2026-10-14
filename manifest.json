@@ -2,20 +2,20 @@
   "name": "LaDoDo Land",
   "short_name": "LaDoDo Land",
   "description": "LaDoDo Land",
-  "start_url": "./index.html?v=v1791994836472",
+  "start_url": "./index.html?v=v1791995569330",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#00ffff",
   "icons": [
     {
-      "src": "./icon-192.png?v=v1791994836472",
+      "src": "./icon-192.png?v=v1791995569330",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "./icon-512.png?v=v1791994836472",
+      "src": "./icon-512.png?v=v1791995569330",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
